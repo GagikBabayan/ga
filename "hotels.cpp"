@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+struct information {
+        string country; 
+        string city; 
+        string name; 
+        int star; 
+        int num_room; 
+        int price;
+};
+
+int main() {
+        cout << " Inpute agent or client ";
+        string user;
+        cin >> user;
+        if ( user == "agent") {
+                agent
+        }
+        else if ( user == "clinet") {
+
+
+        }
+
+
+return 0;
+
+}

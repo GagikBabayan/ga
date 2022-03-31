@@ -1,0 +1,54 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+struct information {
+        string country;
+        string city;
+        string name;
+        int star; 
+        int num_room;
+        int price;
+};
+
+int main () {
+        loop:
+        string info[6] = "";
+        cout << "country: ";
+        getline(cin,info[0];
+        cout << "city: ";
+        getline(cin,info[1];
+        cout << "name: ";
+        getline(cin,info[2];
+        cout << "star: ";
+        cin >> info[3];
+        cout << "num_room";
+        cin >> info[4];
+        cout << "price";
+        cin >> info[5];
+
+        fstream file;
+        file.open("hotels.txt", fstream::in | fstream::out | fstream::app);
+        if(file.is_open()){
+                for(int i = 0; i < 6; i++ ) {
+                        file <<  info[i] << ", " ;
+                }
+                file << "\n";
+                } 
+                        
+                
+        }
+        file.close();
+        string command;
+        cout << "Exit  or Countinue";
+        cin >> command;
+        if(command == "Countinue") {
+                goto loop;
+        }
+else if (command == "Exit") {
+
+        }
+        return 0;
+}

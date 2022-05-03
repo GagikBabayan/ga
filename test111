@@ -1,0 +1,157 @@
+#include <iostream>
+#include <stack>
+#include <queue>
+using namespace std;
+
+struct Node
+{
+    Node *left;
+    Node *right;
+    int data;
+    Node() : left(nullptr), right(nullptr) {}
+
+    Node(int data) : left(nullptr), right(nullptr), data(data) {}
+};
+
+class Tree
+{
+public:
+    Node *root;
+
+    Tree(int data)
+    {
+        root = new Node(data);
+    }
+    Tree()
+    {
+        root = new Node();
+    }
+};
+
+void Add(int data, Node *tree)
+{
+    if (tree->data > data)
+    {
+        if (tree->left)
+        {
+            Add(data, tree->left);
+        }
+        else
+        {
+            tree->left = new Node(data);
+        }
+    }
+    else
+    {
+        if (tree->right)
+        {
+            Add(data, tree->right);
+        }
+        else
+        {
+            tree->right = new Node(data);
+        }
+    }
+}
+
+bool Search(int data, Node *tree)
+{
+    if (tree->data == data)
+    {
+        return true;
+    }
+    else if (tree->data > data)
+    {
+        return Search(data, tree->left);
+    }
+    else
+    {
+        return Search(data, tree->right);
+    }
+    return false;
+}
+
+void Print(Node *temp)
+{
+    if (temp)
+    {
+        Print(temp->left);
+        cout << temp->data << " ";
+        Print(temp->right);
+    }
+}
+
+bool is_Empty(Node *tree)
+{
+    return tree == nullptr;
+}
+
+int min(Node *root)
+{
+    while (root->left)
+        root = root->left;
+    return root->data;
+}
+
+int max(Node *root)
+{
+    while (root->right)
+        root = root->right;
+    return root->data;
+}
+
+int sum(Node *root)
+{
+    if (root)
+        return root->data + sum(root->left) + sum(root->right);
+    return 0;
+}
+
+int sum(Tree *tree)
+{
+    return sum(tree->root);
+}
+
+int min(Tree *tree)
+{
+    return min(tree->root);
+}
+
+int max(Tree *tree)
+{
+    return max(tree->root);
+}
+
+void Add(int data, Tree *tree)
+{
+    Add(data, tree->root);
+}
+
+void Print(Tree *tree)
+{
+    Print(tree->root);
+}
+
+bool Search(int data, Tree *tree)
+{
+    return Search(data, tree->root);
+}
+
+int main()
+{
+
+    Tree *root = new Tree(10);
+
+    for (int i = 0; i < 13; i++)
+    {
+        Add(i, root);
+    }
+
+    Print(root);
+
+    cout << endl;
+    cout << min(root) << endl;
+    cout << max(root) << endl;
+
+    return 0;
+}

@@ -1,0 +1,44 @@
+#include <iostream>
+#include <ctime>
+#include <random>
+
+// #include "simplegraph.hpp"
+#include "simplegraph.hpp"
+
+using namespace std;
+
+mt19937 gen(time(nullptr));
+int genNumber(int u, int v) {
+    if (u > v) {
+        swap(u, v);
+    }
+    return gen() % (v - u + 1) + u;
+}
+
+void printGraph(Graph graph) {
+    graph.print();
+    cout << "|E| = " << graph.numberOfEdges() << endl;
+    cout << "|V| = " << graph.numberOfVertices() << endl;
+    cout << endl;
+}
+
+int main() {
+    Graph graph(10);
+    for (int i = 0; i < 100; i++) {
+        graph.addDirectedEdge(genNumber(0, 9), genNumber(0, 9));
+    }
+    vector<int> temp = graph.nodesWithConnected(0);
+    for (vector<int>::iterator it = temp.begin(); it != temp.end(); it++) {
+        cout << *it << " ";
+    }
+    cout << endl;
+    for (int i = 0; i < 13; i++) {
+        graph.removeDirectedEdge(genNumber(0, 9), genNumber(0, 9));
+        printGraph(graph);
+    }
+    for (int i = 0; i < 10; i++) {
+        graph.removeVertex(genNumber(0, (int) graph.numberOfVertices() - 1));
+        printGraph(graph);
+    }
+    return 0;
+}

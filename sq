@@ -1,0 +1,172 @@
+#ifndef __SIMPLEGRAPH_H__
+#define __SIMPLEGRAPH_H__
+
+#include <vector>
+#include <iostream>
+#include <set>
+
+using std::set;
+using std::vector;
+using std::cout;
+using std::endl;
+
+class Graph {
+private:
+    vector<vector<bool>> graph;
+
+    vector<int> nodesWithConnected(bool*, int);
+
+public:
+    Graph() = default;
+    Graph(int number_of_vertices) : graph(vector<vector<bool>>(number_of_vertices, vector<bool>(number_of_vertices, false))) {}
+
+    int numberOfVertices() const;
+    int numberOfEdges() const;
+
+    int getInDegree(int) const;
+    int getOutDegree(int) const;
+    int getDegree(int) const;
+    int* nodeNeighBours(int) const;
+
+    void addVertex();
+    void addDirectedEdge(int, int);
+    void addEdge(int, int);
+
+    void removeVertex(int);
+    void removeDirectedEdge(int, int);
+    void removeEdge(int, int);
+
+    void print() const;
+
+    vector<int> nodesWithConnected(int);
+    
+    bool isConnected(int, int) const;
+};
+
+int Graph::numberOfVertices() const {
+    return (int) graph.size();
+}
+
+int Graph::numberOfEdges() const {
+    int number_of_edges = 0;
+    for (auto temp : graph) {
+        for (auto temptemp : temp) {
+            number_of_edges += (int) temptemp;
+        }
+    }
+    return number_of_edges;
+}
+
+int Graph::getInDegree(int u) const {
+    int degree = 0;
+    for (int i = 0; i < numberOfVertices(); i++) {
+        if (graph[i][u]) {
+            degree++;
+        }
+    }
+    return degree;
+}
+
+int Graph::getOutDegree(int u) const {
+    int degree = 0;
+    for (int i = 0; i < numberOfVertices(); i++) {
+        if (graph[u][i]) {
+            degree++;
+        }
+    }
+    return degree;
+}
+
+int Graph::getDegree(int u) const {
+    return getInDegree(u) + getOutDegree(u);
+}
+
+int* Graph::nodeNeighBours(int u) const {
+    int* neighbours = new int[getDegree(u)];
+    int base = 0;
+    for (int i = 0; i < numberOfVertices(); i++) {
+        if (graph[u][i]) {
+            neighbours[base] = i;
+            base++;
+        }
+    }
+    return neighbours;
+}
+
+void Graph::addVertex() {
+    graph.push_back(vector<bool>((int) graph.size(), 0));
+    for (auto& temp : graph) {
+        temp.push_back(false);
+    }
+}
+
+void Graph::addDirectedEdge(int u, int v) {
+    if (!graph[u][v]) {
+        graph[u][v] = true;
+    }
+}
+
+void Graph::addEdge(int u, int v) {
+    addDirectedEdge(u, v);
+    addDirectedEdge(v, u);
+}
+
+void Graph::removeVertex(int vertex) {
+    graph.erase(graph.begin() + vertex);
+    for (int i = 0; i < (int) graph.size(); i++) {
+        graph[i].erase(graph[i].begin() + vertex);
+    }
+}
+
+void Graph::removeDirectedEdge(int u, int v) {
+    if (graph[u][v]) {
+        graph[u][v] = false;
+    }
+}
+
+void Graph::removeEdge(int v, int u) {
+    removeDirectedEdge(u, v);
+    removeDirectedEdge(v, u);
+}
+
+void Graph::print() const {
+    cout << " ";
+    for (int i = 0; i < (int) graph.size(); i++) {
+        cout << " " << i;
+    }
+    cout << endl;
+    for (int i = 0; i < (int) graph.size(); i++) {
+        cout << i;
+        for (int j = 0; j < (int) graph[i].size(); j++) {
+            cout << " " << graph[i][j];
+        }
+        cout << endl;
+    }
+}
+
+bool Graph::isConnected(int u, int v) const {
+    return graph[u][v];
+}
+
+vector<int> Graph::nodesWithConnected(bool* is_visited, int u) {
+    vector<int> temp;
+    temp.push_back(u);
+    is_visited[u] = true;
+    for(int i = 0; i < numberOfVertices(); i++) {
+        if (!is_visited[i] && graph[u][i]) {
+            vector<int> t = nodesWithConnected(is_visited, i);
+            temp.insert(temp.end(), t.begin(), t.end());
+        }
+    }
+    return temp;
+}
+
+vector<int> Graph::nodesWithConnected(int u) {
+    bool* is_visited = new bool[numberOfVertices()];
+    for (int i = 0; i < numberOfVertices(); i++) {
+        is_visited[i] = false;
+    }
+    return nodesWithConnected(is_visited, u);
+}
+
+#endif 

@@ -1,0 +1,42 @@
+#ifndef __HASHTABLE_H__
+#define __HASHTABLE_H__
+
+#include <iostream>
+#include <list>
+using namespace std;
+
+class Hash
+{
+private:
+  int BUCKET;
+  list<int> *table;
+
+public:
+  Hash(int);
+  Hash();
+  int hashFunction(int);
+
+  void insertItem(int);
+  
+};
+
+Hash::Hash()
+{
+  BUCKET = 0;
+}
+Hash::Hash(int b)
+{
+  this->BUCKET = b;
+  table = new list<int>[BUCKET];
+}
+
+int Hash::hashFunction(int x)
+{
+  return (x % BUCKET);
+}
+
+void Hash::insertItem(int key)
+{
+  int index = hashFunction(key);
+  table[index].push_back(key);
+}

@@ -1,42 +1,23 @@
-#ifndef __HASHTABLE_H__
-#define __HASHTABLE_H__
+#include "hashtable.hpp"
 
-#include <iostream>
-#include <list>
-using namespace std;
-
-class Hash
+int main()
 {
-private:
-  int BUCKET;
-  list<int> *table;
 
-public:
-  Hash(int);
-  Hash();
-  int hashFunction(int);
+  int a[] = {15, 11, 27, 8, 12};
+  int n = sizeof(a) / sizeof(a[0]);
 
-  void insertItem(int);
-  
-};
+  string b[] = {"hello", "world", "Armenia"};
+  int k = sizeof(b) / sizeof(b[0]);
 
-Hash::Hash()
-{
-  BUCKET = 0;
-}
-Hash::Hash(int b)
-{
-  this->BUCKET = b;
-  table = new list<int>[BUCKET];
-}
+  Hash<string> h(3);
 
-int Hash::hashFunction(int x)
-{
-  return (x % BUCKET);
-}
+  /*for (int i = 0; i < n; i++)
+  {
+    h.insertItem(a[i], i);
+  }
+  */
+  h.insertItem("hello", 3);
+  h.displayHash();
 
-void Hash::insertItem(int key)
-{
-  int index = hashFunction(key);
-  table[index].push_back(key);
+  return 0;
 }

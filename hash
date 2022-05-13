@@ -3,49 +3,71 @@
 
 #include <iostream>
 #include <list>
+#include <string>
 using namespace std;
 
+template <class T>
 class Hash
 {
 private:
   int BUCKET;
-  list<int> *table;
+  int value;
+  list<T> *table;
 
 public:
   Hash(int);
   Hash();
   int hashFunction(int);
+  int hash_function(string, int);
 
-  void insertItem(int);
+  void insertItem(string, int);
   void displayHash();
-  void deleteItem(int);
+  // void deleteItem(T);
 };
 
-Hash::Hash()
+template <class T>
+Hash<T>::Hash()
 {
   BUCKET = 0;
 }
-Hash::Hash(int b)
+
+template <class T>
+Hash<T>::Hash(int b)
 {
   this->BUCKET = b;
-  table = new list<int>[BUCKET];
+  table = new list<string>[BUCKET];
 }
 
-int Hash::hashFunction(int x)
+template <class T>
+int Hash<T>::hashFunction(int x)
 {
   return (x % BUCKET);
 }
 
-void Hash::insertItem(int key)
+template <class T>
+void Hash<T>::insertItem(string key, int value)
 {
-  int index = hashFunction(key);
+  int index = hash_function(key, value);
   table[index].push_back(key);
 }
 
-void Hash::deleteItem(int key)
+template <class T>
+int Hash<T>::hash_function(string str, int CAPACITY)
+{
+  int i = 0;
+  for (int j = 0; str[j]; j++)
+  {
+    i += str[j];
+    cout << i << " ";
+  }
+  return i % CAPACITY;
+}
+/*
+template <class T>
+void Hash<T>::deleteItem(T key)
 {
 
-  int index = hashFunction(key);
+  int index = hash_function(key);
 
   list<int>::iterator i;
   for (i = table[index].begin();
@@ -57,9 +79,10 @@ void Hash::deleteItem(int key)
 
   if (i != table[index].end())
     table[index].erase(i);
-}
+}*/
 
-void Hash::displayHash()
+template <class T>
+void Hash<T>::displayHash()
 {
   for (int i = 0; i < BUCKET; i++)
   {
